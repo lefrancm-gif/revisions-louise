@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {questions,memos} from '../data.js';
+import {mastery,dailyQuestions,mergeAttempts,scoreAnswers,validateBackup,dayKey} from '../core.js';
+const attempt=(id,q,correct,at='2026-11-23T09:00:00.000Z')=>({id,questionId:q,correct,at,selfAssessed:false,response:'Exemple'});
+test('Le catalogue fournit 50 QCM et 6 exercices ouverts cohérents',()=>{assert.equal(questions.filter(q=>q.type==='mcq').length,50);assert.equal(questions.filter(q=>q.type==='open').length,6);assert.equal(new Set(questions.map(q=>q.id)).size,56);for(const q of questions){assert.ok(q.memo.length>30);if(q.type==='mcq'){assert.ok(q.answer>=0&&q.answer<q.choices.length);assert.equal(new Set(q.choices).size,q.choices.length);}else assert.equal(q.criteria.length,3);}assert.equal(memos.length,8);});
+test('La progression reflète la dernière réponse, pas une réussite ancienne',()=>{const a=[attempt('a','scapin-01',true),attempt('b','scapin-01',false,'2026-11-24T09:00:00Z')];assert.equal(mastery(questions,a).known,0);assert.equal(mastery(questions,a.reverse()).known,0);});
+test('La séance quotidienne priorise erreurs puis nouveautés puis révisions anciennes',()=>{const a=[attempt('a','scapin-01',true),attempt('b','scapin-02',false)];const q=dailyQuestions(questions,a,8);assert.equal(q.length,8);assert.equal(q[0].id,'scapin-02');assert.equal(q[1].id,'scapin-03');assert.ok(!q.some(q=>q.type==='open'));});
+test('La fusion de synchronisation est idempotente',()=>{const a=attempt('a','scapin-01',true),b=attempt('b','scapin-02',false);assert.deepEqual(mergeAttempts([a],[a,b]),mergeAttempts([a,b],[a,b]));assert.equal(mergeAttempts([a],[a,b]).length,2);});
+test('La rédaction autoévaluée ne gonfle pas la note QCM',()=>{assert.deepEqual(scoreAnswers([{correct:true,selfAssessed:false},{correct:false,selfAssessed:false},{correct:true,selfAssessed:true}]),{correct:1,total:2,self:1});});
+test('Import valide seulement les réponses bornées et supprime les champs étrangers',()=>{const a=attempt('d0b8c712-4f2a-4ff3-a2ab-cbc12e5d1010','scapin-01',true);const b=validateBackup({version:1,attempts:[{...a,user_id:'autre'}]});assert.deepEqual(b,[a]);assert.throws(()=>validateBackup({version:1,attempts:[{...a,response:'a'.repeat(5001)}]}));assert.throws(()=>validateBackup({version:1,attempts:[{...a,correct:'oui'}]}));assert.throws(()=>validateBackup({version:99,attempts:[]}));});
+test('Jour calculé en heure locale, pas en UTC',()=>{assert.equal(dayKey(new Date(2026,10,23,0,1)),'2026-11-23');});
