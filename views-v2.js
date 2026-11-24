@@ -1,4 +1,4 @@
-import {weeklyPlan,weekKey,completedRuns,parentReport} from './planning.js?v=2.1';
+import {weeklyPlan,weekKey,completedRuns,parentReport} from './planning.js?v=2.2';
 export function newViews(ctx){
  const {esc,button,state,courses,course,currentUser,member,configured}=ctx;
  const heading=(small,title,desc)=>`<div class="intro"><div><div class="eyebrow">${small}</div><h1>${title}</h1><p class="muted">${desc}</p></div></div>`;

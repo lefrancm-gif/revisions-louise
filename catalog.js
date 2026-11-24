@@ -1,6 +1,9 @@
-import {questions,memos} from './data.js?v=2.1';
-import {english} from './english.js?v=2.1';
-export const builtInCourses=[{id:'scapin',title:'Les Fourberies de Scapin',subject:'Français',description:'Comprendre le théâtre, les personnages et les procédés comiques.',questions,memos},english];
+import {maths} from './maths.js?v=2.2';
+import {geometry} from './geometry.js?v=2.2';
+import {geography} from './geography.js?v=2.2';
+import {questions,memos} from './data.js?v=2.2';
+import {english} from './english.js?v=2.2';
+export const builtInCourses=[{id:'scapin',title:'Les Fourberies de Scapin',subject:'Français',description:'Comprendre le théâtre, les personnages et les procédés comiques.',questions,memos},english,maths,geometry,geography];
 export function validateCourse(raw){
  const text=(v,max)=>typeof v==='string'&&v.trim().length>0&&v.length<=max;
  if(!raw||!text(raw.id,60)||!/^custom-[a-z0-9-]+$/.test(raw.id)||!text(raw.title,120)||!text(raw.subject,40)||!Array.isArray(raw.questions)||raw.questions.length<1||raw.questions.length>300||!Array.isArray(raw.memos)||raw.memos.length>50)throw Error('Fichier de révision invalide : titre, matière, questions et fiches sont nécessaires.');

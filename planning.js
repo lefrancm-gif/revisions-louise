@@ -1,4 +1,4 @@
-import {mergeAttempts} from './core.js?v=2.1';
+import {mergeAttempts} from './core.js?v=2.2';
 export function weekKey(now=new Date()){const d=new Date(Date.UTC(now.getFullYear(),now.getMonth(),now.getDate()));d.setUTCDate(d.getUTCDate()-((d.getUTCDay()+6)%7));return d.toISOString().slice(0,10);}
 export function weekNumber(now=new Date()){return Math.floor((Date.parse(weekKey(now))-Date.UTC(2026,10,23))/(7*86400000));}
 export function weeklyPlan(course,now=new Date()){

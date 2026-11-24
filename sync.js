@@ -1,5 +1,5 @@
-import {cleanMeta} from './core.js?v=2.1';
-import {config} from './config.js?v=2.1';
+import {cleanMeta} from './core.js?v=2.2';
+import {config} from './config.js?v=2.2';
 export const configured=Boolean(/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(config.supabaseUrl)&&config.supabaseKey);
 let session=null;
 try{session=JSON.parse(sessionStorage.getItem('louise-auth')||'null');}catch{}

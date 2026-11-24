@@ -53,3 +53,13 @@ Sources :
 Pas de génération IA en arrière-plan, de lecture automatique de PDF/photos dans le site ni de notation automatique de rédaction. Les cours peuvent être préparés avec l’assistant puis importés. Le programme hebdomadaire réutilise une banque finie ; il ne génère pas de questions inédites chaque semaine. L'examen blanc est un sujet fixe ; recommencer le même sujet mesure l'entraînement, pas une évaluation indépendante. Les notes personnelles sont locales et ne figurent pas dans l'export des réponses. L'accès hors ligne sur un iPad administré dépend des règles de l'école.
 
 Les résultats automatiques sont des indicateurs d'entraînement, pas des notes certifiées : le navigateur peut être modifié par son utilisateur.
+
+## Révisions ajoutées le 24 novembre 2026
+
+Trois dossiers issus des notions des cours retrouvés : nombres relatifs et coordonnées (32 QCM, 4 productions), géométrie (24 QCM, 5 constructions/justifications), croissance démographique (24 QCM, 4 productions). Huit fiches par dossier. Les documents photographiés ne sont pas publiés ; les exercices sont nouvellement rédigés.
+
+L’écran Examens blancs propose trois lots de QCM sans chevauchement et leurs compléments rédigés. Le score automatique reste limité aux QCM. Les tracés et explications sont corrigés avec un adulte et autoévalués. La date du contrôle est modifiable et locale ; aucune notification n’est programmée. Les maths sont préremplies au 26 novembre 2026 et la géographie signalée pour la semaine du 30 novembre, jour à préciser.
+
+Le dossier de relatifs sépare les additions/soustractions complémentaires des bilans centrés sur les deux pages du cours (signes, comparaison, repérage). Le cercle circonscrit au triangle rectangle reprend un complément déjà travaillé, explicitement indiqué comme notion de 4e dans le programme national 2026. Cette banque n’est pas tout le programme annuel de maths.
+
+Vérification : 24 tests Node (contenus, intégrité des questions, programmes, calendrier, sauvegarde et bilan), construction statique et parcours navigateur local. La synchronisation Supabase nécessite toujours une configuration réelle ; aucune validation de connexion familiale en production n’est revendiquée.
