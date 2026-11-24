@@ -1,4 +1,5 @@
-import {config} from './config.js';
+import {cleanMeta} from './core.js?v=2.1';
+import {config} from './config.js?v=2.1';
 export const configured=Boolean(/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(config.supabaseUrl)&&config.supabaseKey);
 let session=null;
 try{session=JSON.parse(sessionStorage.getItem('louise-auth')||'null');}catch{}
@@ -9,6 +10,7 @@ export async function login(email,password){if(!configured)throw Error('Les comp
 export async function logout(){try{if(session)await request('/auth/v1/logout',{method:'POST',token:session.access_token});}finally{keep(null);}}
 async function token(){if(!session)throw Error('Connecte-toi pour synchroniser.');if(Date.now()>session.expires_at-60000){const s=await request('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:{refresh_token:session.refresh_token}});keep({...s,expires_at:Date.now()+s.expires_in*1000});}return session.access_token;}
 export async function membership(){const t=await token();const rows=await request(`/rest/v1/members?user_id=eq.${currentUser()}&select=family_id,role`,{token:t});if(rows.length!==1)throw Error('Ce compte doit être associé à ta famille par le parent administrateur.');return rows[0];}
-export async function synchronize(attempts){const t=await token(),member=await membership();if(member.role==='learner'&&attempts.length){for(let i=0;i<attempts.length;i+=100){const rows=attempts.slice(i,i+100).map(a=>({id:a.id,user_id:currentUser(),family_id:member.family_id,question_id:a.questionId,correct:a.correct,self_assessed:a.selfAssessed,response:a.response,at:a.at}));await request('/rest/v1/attempts?on_conflict=id',{method:'POST',token:t,body:rows,headers:{Prefer:'resolution=ignore-duplicates,return=minimal'}});}}
+export async function synchronize(attempts,packs=[]){const t=await token(),member=await membership();if(member.role==='learner'&&attempts.length){for(let i=0;i<attempts.length;i+=100){const rows=attempts.slice(i,i+100).map(a=>({id:a.id,user_id:currentUser(),family_id:member.family_id,question_id:a.questionId,correct:a.correct,self_assessed:a.selfAssessed,response:a.response,at:a.at,metadata:cleanMeta(a.meta)}));await request('/rest/v1/attempts?on_conflict=id',{method:'POST',token:t,body:rows,headers:{Prefer:'resolution=ignore-duplicates,return=minimal'}});}}
+const savedPackIds=[];if(member.role==='parent'){for(const pack of packs){await request('/rest/v1/course_packs?on_conflict=family_id,id',{method:'POST',token:t,body:{family_id:member.family_id,id:pack.id,content:pack},headers:{Prefer:'resolution=merge-duplicates,return=minimal'}});savedPackIds.push(pack.id);}}const courses=await request('/rest/v1/course_packs?select=content&limit=1000',{token:t});
 const rows=[];for(let offset=0;;offset+=1000){const page=await request(`/rest/v1/attempts?select=*&order=at.asc,id.asc&limit=1000&offset=${offset}`,{token:t});rows.push(...page);if(page.length<1000)break;if(rows.length>100000)throw Error('Historique trop volumineux.');}
-return {member,attempts:rows.map(a=>({id:a.id,questionId:a.question_id,correct:a.correct,selfAssessed:a.self_assessed,response:a.response,at:a.at}))};}
+return {member,courses:courses.map(c=>c.content),savedPackIds,attempts:rows.map(a=>({id:a.id,questionId:a.question_id,correct:a.correct,selfAssessed:a.self_assessed,response:a.response,at:a.at,metadata:cleanMeta(a.meta)}))};}

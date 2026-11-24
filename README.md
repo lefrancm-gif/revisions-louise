@@ -1,8 +1,14 @@
 # Louise · Mon atelier de révision
 
-Application web de révision de français, niveau 5e, utilisable sur iPad, iPhone et ordinateur. Première séquence : **Les Fourberies de Scapin**.
+Application web de révision de français, niveau 5e, utilisable sur iPad, iPhone et ordinateur. Séquences disponibles : **Les Fourberies de Scapin** et **anglais hebdomadaire**.
 
 ## Disponible
+
+- Anglais : 3 séances de 10 min environ et un petit bilan par semaine, rotation automatique de 6 thèmes, 48 QCM, 6 productions et 6 mémos.
+- Bibliothèque multi-matières et import/export de dossiers préparés avec l’assistant ; formulaire de création sans code.
+- Bilan familial : activité sur 7 jours, séances terminées, premières réponses, couverture et priorités du soir.
+- Dossiers familiaux synchronisables par le compte parent après configuration et migration Supabase.
+
 
 - Séance quotidienne de 8 QCM : erreurs prioritaires, notions nouvelles puis anciennes réussites.
 - 50 QCM originaux, correction expliquée et mémos ; reprise des questions manquées.
@@ -35,7 +41,7 @@ Ouvrir http://127.0.0.1:4173 (pas `file://`). `dist/` contient les seuls fichier
 
 ## Pédagogie
 
-Le programme de français de 5e applicable à la rentrée 2026 est la référence. Cette application couvre une séquence de théâtre, pas toutes les matières ni l'ensemble du français. Les consignes du professeur restent prioritaires. Les documents de cours du partage initial n'étaient pas accessibles : aucune correspondance exacte avec ces documents n'est affirmée.
+Le programme de français de 5e applicable à la rentrée 2026 est la référence. Le français couvre une séquence de théâtre. L’anglais propose un socle de consolidation vers A2 en LVA, avec six thèmes, sans prétendre couvrir ou certifier toutes les compétences annuelles. Les consignes du professeur restent prioritaires. Les documents de cours du partage initial n'étaient pas accessibles : aucune correspondance exacte avec ces documents n'est affirmée.
 
 Sources :
 - [BO du 5 mars 2026](https://www.education.gouv.fr/bo/2026/Hebdo10/MENE2602912A).
@@ -44,6 +50,6 @@ Sources :
 
 ## Limites de cette version
 
-Pas de génération IA, de lecture automatique de PDF/photos, de gestion des autres matières ou de notation automatique de rédaction. L'examen blanc est un sujet fixe ; recommencer le même sujet mesure l'entraînement, pas une évaluation indépendante. Les notes personnelles sont locales et ne figurent pas dans l'export des réponses. L'accès hors ligne sur un iPad administré dépend des règles de l'école.
+Pas de génération IA en arrière-plan, de lecture automatique de PDF/photos dans le site ni de notation automatique de rédaction. Les cours peuvent être préparés avec l’assistant puis importés. Le programme hebdomadaire réutilise une banque finie ; il ne génère pas de questions inédites chaque semaine. L'examen blanc est un sujet fixe ; recommencer le même sujet mesure l'entraînement, pas une évaluation indépendante. Les notes personnelles sont locales et ne figurent pas dans l'export des réponses. L'accès hors ligne sur un iPad administré dépend des règles de l'école.
 
 Les résultats automatiques sont des indicateurs d'entraînement, pas des notes certifiées : le navigateur peut être modifié par son utilisateur.
