@@ -134,7 +134,16 @@ export function spanishWeek(now = new Date()) {
   </section>`;
 }
 
-export function bindSpanishWeek(now = new Date()) {
+const questionId = (week, part) => 'spanish-' + (weeks.indexOf(week) + 1) + '-' + part;
+export const spanishJournalTopics = weeks.flatMap(week =>
+  [['reading','Compréhension','Relire le texte et souligner la phrase qui donne la réponse.'],
+   ['vocab','Vocabulaire','Reprendre les mots de la fiche, puis les dire sans regarder.'],
+   ['grammar','Grammaire',week.rule],
+   ['writing','Expression écrite','Relire la production avec le modèle.']]
+    .map(([part,label,tip]) => [questionId(week,part), {subject:'Espagnol',topic:week.title + ' · ' + label,tip}])
+);
+
+export function bindSpanishWeek(now = new Date(), saveExam = () => {}) {
   const week = lessonFor(now);
   document.querySelector('#spanish-exam').addEventListener('submit', event => {
     event.preventDefault();
@@ -148,6 +157,15 @@ export function bindSpanishWeek(now = new Date()) {
       ['vocab', 'Vocabulaire', week.words[2][0]],
       ['grammar', 'Grammaire', week.forms[0]]
     ];
+    if (!event.currentTarget.dataset.journalSaved) {
+      saveExam([
+        ...keys.map(([name, , answer]) => ({
+          questionId: questionId(week,name), correct: values.get(name) === answer, response: values.get(name), selfAssessed: false
+        })),
+        {questionId: questionId(week,'writing'), correct:false, response:'', selfAssessed:true}
+      ]);
+      event.currentTarget.dataset.journalSaved = 'true';
+    }
     const points = keys.filter(([name, , answer]) => values.get(name) === answer).length;
     document.querySelector('#spanish-result').innerHTML = `<h3>Corrigé</h3>
       <p><strong>${points}/3</strong> pour les questions à choix.</p>
