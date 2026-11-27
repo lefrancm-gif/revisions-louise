@@ -1,3 +1,4 @@
+import {englishExamTopics} from './english-exam-2.js';
 import {mergeAttempts} from './core.js?v=2.2';
 import {spanishJournalTopics} from './spanish.js?v=2.4';
 
@@ -11,7 +12,7 @@ export function journalDate(date = new Date()) {
 }
 
 export function dailyJournal(courses, attempts, day) {
-  const labels = new Map(spanishJournalTopics);
+  const labels = new Map([...spanishJournalTopics,...englishExamTopics]);
   for (const course of courses) {
     for (const question of course.questions) {
       labels.set(question.id, {
